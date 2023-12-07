@@ -1,5 +1,5 @@
 import { parseCurrency } from './Utils';
-
+import { calcularDasSimplesNacional } from './SimplesTaxCalculator';
 export const salarioMinimo = 1320;
 export const inssPatronalAliquota = 11 / 100;
 export const inssPatronalPisoContribuicao = salarioMinimo * inssPatronalAliquota;
@@ -69,4 +69,8 @@ export function calcularFerias(salario) {
 
 export function calcularFgtsClt(salario, ferias, decimoterceiro) {
   return (salario + (ferias * -1) + (decimoterceiro * -1)) * - fgtsContribuicao;
+}
+
+export const calcularDasPJ = (salario) => {
+  return calcularDasSimplesNacional(salario);
 }

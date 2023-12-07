@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { getNewCalculatedData } from '../constants/calculatedData';
 import { AppContext } from '../contexts/AppContext';
-import { calcularDecimoTerceiro, calcularDescontoInss, calcularFerias, calcularFgtsClt, calcularImpostoDeRenda } from '../services/TaxCalculatorService';
+import { calcularDasPJ, calcularDecimoTerceiro, calcularDescontoInss, calcularFerias, calcularFgtsClt, calcularImpostoDeRenda } from '../services/TaxCalculatorService';
 
 function CltSalary() {
   const { baseSalary, setBaseSalary, setAlreadyCalculated, setCalculatedData } = useContext(AppContext);
@@ -46,8 +46,11 @@ function CltSalary() {
 
   const calculateOptionOne = (_calculatedData, _baseSalary) => {
     const percent = _calculatedData.cltDetails.bossTax.percent * -1;
-    _calculatedData.option1.pjSalary = _baseSalary * (1 + percent);
+    const salarioPJ = _baseSalary * (1 + percent);
+    _calculatedData.option1.pjSalary = salarioPJ;
     _calculatedData.option1.percent = percent;
+    _calculatedData.option1.tax.das = calcularDasPJ(salarioPJ);
+
     return _calculatedData;
   };
 

@@ -13,10 +13,11 @@ Valor Teto (Base Mensal)    Alíquota    Parcela a Deduzir
 // 8% sobre a remuneração que seria referente ao FGTS;
 // Custos com o pagamento de impostos.
 
-const porcaoferias = salario / 12;
-const porcaoDecimoTerceiro = salario / 12;
-const fgts = salario * (8/100);
-const das = salario * (6/100); // 6% aproximadamente.
+// const porcaoferias = salario / 12;
+// const porcaoDecimoTerceiro = salario / 12;
+// const fgts = salario * (8/100);
+// const das = salario * (6/100); // 6% aproximadamente.
+
 
 export const SnAnexo3_Faixa1Teto = 180000 / 12;
 export const SnAnexo3_Faixa2Teto = 360000 / 12;
@@ -38,3 +39,21 @@ export const SnAnexo3_Faixa3Parcela = 17640 / 12;
 export const SnAnexo3_Faixa4Parcela = 35640 / 12;
 export const SnAnexo3_Faixa5Parcela = 125640 / 12;
 export const SnAnexo3_Faixa6Parcela = 648000 / 12;
+
+export const calcularDasSimplesNacional = (salarioPj) => {
+    debugger;
+    const salario = Number(salarioPj);
+    if (salario <= SnAnexo3_Faixa1Teto) {
+        return salario * SnAnexo3_Faixa1Aliquota - SnAnexo3_Faixa1Parcela;
+    } else if (salario <= SnAnexo3_Faixa2Teto) {
+        return salario * SnAnexo3_Faixa2Aliquota - SnAnexo3_Faixa2Parcela;
+    } else if (salario <= SnAnexo3_Faixa3Teto) {
+        return salario * SnAnexo3_Faixa3Aliquota - SnAnexo3_Faixa3Parcela;
+    } else if (salario <= SnAnexo3_Faixa4Teto) {
+        return salario * SnAnexo3_Faixa4Aliquota - SnAnexo3_Faixa4Parcela;
+    } else if (salario <= SnAnexo3_Faixa5Teto) {
+        return salario * SnAnexo3_Faixa5Aliquota - SnAnexo3_Faixa5Parcela;
+    }
+    
+    return salario * SnAnexo3_Faixa6Aliquota - SnAnexo3_Faixa6Parcela;
+}
