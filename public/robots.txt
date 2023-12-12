@@ -2,3 +2,4 @@ robots.txt
 User-agent: *
 Disallow: 
 Disallow: /cgi-bin/
+Sitemap: https://calculadora.julioborges.net.br/sitemap.xml
