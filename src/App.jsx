@@ -6,7 +6,7 @@ import { useState } from 'react';
 import './App.css';
 
 import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import CltSalary from './components/CltSalary';
 import Footer from './components/Footer';
 import Header from './components/Header';
