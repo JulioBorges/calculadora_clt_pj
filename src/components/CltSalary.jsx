@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { getNewCalculatedData } from '../constants/calculatedData';
 import { AppContext } from '../contexts/AppContext';
-import { calcularDasPJ, calcularDecimoTerceiro, calcularDescontoInss, calcularFerias, calcularFgtsClt, calcularImpostoDeRenda } from '../services/TaxCalculatorService';
+import { calcularDasPJ, calcularDecimoTerceiro, calcularDescontoInss, calcularFerias, calcularFgtsClt, calcularImpostoDeRenda, calcularInssPJ, calcularIrrfPj } from '../services/TaxCalculatorService';
 
 function CltSalary() {
   const { baseSalary, setBaseSalary, setAlreadyCalculated, setCalculatedData } = useContext(AppContext);
@@ -20,9 +20,18 @@ function CltSalary() {
     setAlreadyCalculated(false);
   };
   
+  const calculateClt = (_calculatedData, _baseSalary) => {
+    _calculatedData = calculateUserTax(_calculatedData, _baseSalary)
+    _calculatedData = calculateBossTax(_calculatedData, _baseSalary);
+
+    const liquidSalary = Number(_baseSalary) - Number(_calculatedData.cltDetails.userTax.inss) - Number(_calculatedData.cltDetails.userTax.irrf);
+    _calculatedData.cltDetails.cltLiquidSalary = liquidSalary;
+    return _calculatedData;
+  };
+
   const calculateUserTax = (_calculatedData, _baseSalary) => {
     const inss = calcularDescontoInss(_baseSalary);
-    const irrf = calcularImpostoDeRenda(_baseSalary, inss * -1);
+    const irrf = calcularImpostoDeRenda(_baseSalary, inss);
     
     _calculatedData.cltDetails.userTax.inss = inss;
     _calculatedData.cltDetails.userTax.irrf = irrf;
@@ -44,13 +53,51 @@ function CltSalary() {
     return _calculatedData;
   };
 
+  const calculatePJTaxes = (option, salarioPJ) => {
+    const inss = calcularInssPJ(salarioPJ);
+    option.tax.das = calcularDasPJ(salarioPJ);
+    option.tax.inss = inss;
+    option.tax.irrf = calcularIrrfPj(salarioPJ, inss);
+
+    const totalTax = option.tax.das  + option.tax.inss + option.tax.irrf;
+    option.tax.totalTax = totalTax;
+    option.tax.percent = totalTax / salarioPJ;
+
+    option.pjLiquidSalary = salarioPJ - totalTax;
+
+    return option;
+  }
+
   const calculateOptionOne = (_calculatedData, _baseSalary) => {
-    const percent = _calculatedData.cltDetails.bossTax.percent * -1;
+    const percent = _calculatedData.cltDetails.bossTax.percent;
     const salarioPJ = _baseSalary * (1 + percent);
+
     _calculatedData.option1.pjSalary = salarioPJ;
     _calculatedData.option1.percent = percent;
-    _calculatedData.option1.tax.das = calcularDasPJ(salarioPJ);
+    _calculatedData.option1 = calculatePJTaxes(_calculatedData.option1, salarioPJ);
+    return _calculatedData;
+  };
 
+  const calculateOptionTwo = (_calculatedData, _baseSalary) => {
+    
+    const percent = -((1 - ( _calculatedData.cltDetails.cltLiquidSalary/_baseSalary)) - (10/100));
+
+    const salarioPJ = _baseSalary * (1 + percent);
+
+    _calculatedData.option2.pjSalary = salarioPJ;
+    _calculatedData.option2.percent = percent;
+    _calculatedData.option2 = calculatePJTaxes(_calculatedData.option2, salarioPJ);
+    return _calculatedData;
+  };
+
+  const calculateSalaryDiff =(_calculatedData, _baseSalary) => {
+    
+    const percent = 1;
+    const salarioPJ = _baseSalary;
+
+    _calculatedData.option2.pjSalary = salarioPJ;
+    _calculatedData.option2.percent = percent;
+    _calculatedData.option2 = calculatePJTaxes(_calculatedData.option2, salarioPJ);
     return _calculatedData;
   };
 
@@ -59,9 +106,10 @@ function CltSalary() {
       let calculatedData = getNewCalculatedData();
       const salario = Number(baseSalary);
       
-      calculatedData = calculateUserTax(calculatedData, salario)
-      calculatedData = calculateBossTax(calculatedData, salario);
+      calculatedData = calculateClt(calculatedData, salario);
       calculatedData = calculateOptionOne(calculatedData, salario);
+      calculatedData = calculateOptionTwo(calculatedData, salario);
+      calculatedData = calculateSalaryDiff(calculatedData, salario);
 
       setCalculatedData(calculatedData);
       setAlreadyCalculated(true);

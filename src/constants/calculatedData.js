@@ -11,7 +11,8 @@ export const getNewCalculatedData = () => {
         vacancy: 0,
         fgts: 0,
         percent: 0
-      }
+      },
+      cltLiquidSalary: 0
     },
     option1: {
       pjSalary: 0,
@@ -20,7 +21,8 @@ export const getNewCalculatedData = () => {
         das: 0,
         inss: 0,
         irrf: 0,
-        percent: 0
+        totalTax: 0,
+        percent: 0,
       },
       percent: 0
     },
@@ -31,6 +33,7 @@ export const getNewCalculatedData = () => {
         das: 0,
         inss: 0,
         irrf: 0,
+        totalTax: 0,
         percent: 0
       },
       percent: 0

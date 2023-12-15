@@ -7,7 +7,7 @@ import { colorBlue, colorRed } from '../constants/styles';
 import { formatCurrency, formatPercent } from '../services/Utils';
 
 function ItemPjDetails({ title, description, pjOption }) {
-  const totalTax = pjOption.tax.das + pjOption.tax.inss + pjOption.tax.irrf;
+  
   return (
     <Grid item key='first-option' xs={12} sm={6} md={4}>
       <Card
@@ -57,7 +57,7 @@ function ItemPjDetails({ title, description, pjOption }) {
           
           <Container sx={{display: 'inline-flex', flexDirection: 'row', paddingTop: '5px'}}>
             <Typography align='right'>
-              <span style={colorRed}><strong>Total impostos: {formatCurrency(totalTax)} [{formatPercent(pjOption.tax.percent)}]</strong></span>
+              <span style={colorRed}><strong>Total impostos: {formatCurrency(pjOption.tax.totalTax)} [{formatPercent(pjOption.tax.percent)}]</strong></span>
             </Typography>
           </Container>
           

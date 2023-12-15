@@ -3,10 +3,10 @@ const currencyFormat = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 });
 
-const percentFormat = new Intl.NumberFormat('pt-BR',{
+const percentFormat = new Intl.NumberFormat('pt-BR', {
   style: 'percent',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
 });
 
 export const formatCurrency = (value) => {

@@ -3,15 +3,10 @@ import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
 import { colorBlue, colorRed } from '../constants/styles';
-import { AppContext } from '../contexts/AppContext';
 import { formatCurrency, formatPercent } from '../services/Utils';
 
 function ItemCltDetails({cltDetails}) {
-  const { baseSalary } = useContext(AppContext);
-  const liquidSalary = Number(baseSalary) + Number(cltDetails.userTax.inss) + Number(cltDetails.userTax.irrf);
-
   return (
     <Grid item key='first-option' xs={12} sm={6} md={4}>
       <Card
@@ -76,7 +71,7 @@ function ItemCltDetails({cltDetails}) {
           </Container>
 
           <Typography gutterBottom variant="h6" component="h4">
-            Sal. Líquido CLT: <span style={colorBlue}>{formatCurrency(liquidSalary)}</span>
+            Sal. Líquido CLT: <span style={colorBlue}>{formatCurrency(cltDetails.cltLiquidSalary)}</span>
           </Typography>
         </CardContent>
       </Card>
