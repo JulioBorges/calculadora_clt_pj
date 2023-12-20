@@ -1,18 +1,30 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Copyright from "./Copyright";
+import Link from "@mui/material/Link";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 function Footer() {
   return (
     <Box sx={{ bgcolor: "background.paper", bottom: 0 }} component='footer'>
-      <Typography variant='h6' align='center' gutterBottom>
+      <Typography variant='h7' align='center' gutterBottom>
         Calculadora CLT x PJ
       </Typography>
-      <Typography variant='subtitle1' align='center' color='text.secondary' component='p'>
+
+      <Typography align='center' fontSize='small' gutterBottom>
+        Contribua com este projeto no{" "}
+        <Link href='https://github.com/JulioBorges/calculadora_clt_pj'>
+          Github <GitHubIcon fontSize='small' />
+        </Link>
+      </Typography>
+
+      <Typography variant='subtitle1' align='center' component='p'>
         Desenvolvido por Julio Borges
       </Typography>
+
       <Copyright />
-      <Typography variant='subtitle1' align='center' color='text.secondary' component='p'>
+
+      <Typography variant='subtitle1' align='center' component='p'>
         Se esta calculadora te ajudou de alguma forma, considere me pagar uma coca-cola geladinha
       </Typography>
       <Box

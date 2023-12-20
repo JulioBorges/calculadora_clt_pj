@@ -129,6 +129,11 @@ function CltSalary() {
     }
   };
 
+  const handleSalaryKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleClickCalculate();
+    }
+  };
   return (
     <Box
       sx={{
@@ -160,6 +165,7 @@ function CltSalary() {
               value={baseSalary}
               startAdornment={<InputAdornment position='start'>R$</InputAdornment>}
               onChange={handleBaseSalaryChange}
+              onKeyDown={handleSalaryKeyDown}
             />
           </FormControl>
           <Button variant='contained' onClick={handleClickCalculate}>
