@@ -8,7 +8,7 @@ import { formatCurrency, formatPercent } from '../services/Utils';
 
 function ItemCltDetails({cltDetails}) {
   return (
-    <Grid item key='first-option' xs={12} sm={6} md={4}>
+    <Grid item key='clt-details' xs={12} sm={6} md={3}>
       <Card
         sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
       >

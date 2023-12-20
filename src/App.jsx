@@ -30,11 +30,11 @@ function App() {
         <main>
           <CltSalary/>
           { alreadyCalculated && <Container maxWidth="lg">
-            <Grid container spacing={3}>
+            <Grid container spacing={5} sx={{paddingBottom: '2rem'}}>
               <ItemCltDetails cltDetails={calculatedData.cltDetails}/>
               <ItemPjDetails title="1º cenário" description="O patrão gasta o mesmo, você ganha mais" pjOption={calculatedData.option1}/>
               <ItemPjDetails title="2º cenário" description="O patrão gasta menos, você ganha o mesmo" pjOption={calculatedData.option2}/>
-              <ItemSalaryDiff/>
+              <ItemSalaryDiff salaryDiff={calculatedData.salaryDiff}/>
             </Grid>
           </Container>}
         </main>

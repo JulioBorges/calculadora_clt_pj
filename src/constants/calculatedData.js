@@ -42,9 +42,13 @@ export const getNewCalculatedData = () => {
       tax: {
         das: 0,
         inss: 0,
-        irrf: 0
+        irrf: 0,
+        totalTax: 0,
+        percent: 0
       },
-      pjLiquidSalary: 0
+      pjSalary: 0,
+      pjLiquidSalary: 0,
+      percent: 0
     }
   };
 }
