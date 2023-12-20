@@ -7,59 +7,58 @@ import { colorBlue, colorRed } from "../constants/styles";
 import { formatCurrency, formatPercent } from "../services/Utils";
 
 function ItemCltDetails({ cltDetails }) {
+  const totalUserTax = cltDetails.userTax.inss + cltDetails.userTax.irrf;
+  const totalBossTax = cltDetails.bossTax.thirteenSalary + cltDetails.bossTax.vacancy + cltDetails.bossTax.fgts;
+
   return (
     <Grid item key='clt-details' xs={12} sm={6} md={3}>
       <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography gutterBottom variant='h5' component='h2'>
-            Detalhamento CLT:
+        <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+          <Typography gutterBottom variant='h6' component='h3'>
+            Detalhamento CLT
           </Typography>
 
-          <Typography gutterBottom variant='h7' component='h5' alignContent='flex-start'>
-            Seus impostos na CLT [<span style={colorRed}>{formatPercent(cltDetails.userTax.percent)}</span>]
+          <Typography alignContent='center' fontSize='small' fontWeight='bold' color='orangered'>
+            Seus impostos na CLT
           </Typography>
 
-          <Container sx={{ display: "inline-flex", flexDirection: "row" }}>
-            <Typography align='right'>INSS:</Typography>
-            <Typography align='left' color='red' sx={{ paddingLeft: 2 }}>
-              {formatCurrency(cltDetails.userTax.inss)}
-            </Typography>
-          </Container>
-
-          <Container sx={{ display: "inline-flex", flexDirection: "row" }}>
-            <Typography align='right'>IRRF:</Typography>
-            <Typography align='left' color='red' sx={{ paddingLeft: 2 }}>
-              {formatCurrency(cltDetails.userTax.irrf)}
-            </Typography>
-          </Container>
-
-          <Typography gutterBottom variant='h7' component='h5' alignContent='flex-start'>
-            Encargos do patrão na CLT [<span style={colorRed}>{formatPercent(cltDetails.bossTax.percent)}</span>]
+          <Typography
+            align='center'
+            color='orangered'
+            fontSize='small'
+            sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+          >
+            <span>INSS: {formatCurrency(cltDetails.userTax.inss)}</span>
+            <span>IRRF: {formatCurrency(cltDetails.userTax.irrf)}</span>
+            <strong>
+              Total: {formatCurrency(totalUserTax)} [{formatPercent(cltDetails.userTax.percent)}]
+            </strong>
           </Typography>
 
-          <Container sx={{ display: "inline-flex", flexDirection: "row" }}>
-            <Typography align='right'>13º Salário:</Typography>
-            <Typography align='left' color='red' sx={{ paddingLeft: 2 }}>
-              {formatCurrency(cltDetails.bossTax.thirteenSalary)}
-            </Typography>
-          </Container>
+          <Typography alignContent='center' fontSize='small' color='orangered' fontWeight='bold'>
+            Encargos do patrão na CLT
+          </Typography>
 
-          <Container sx={{ display: "inline-flex", flexDirection: "row" }}>
-            <Typography align='right'>Férias:</Typography>
-            <Typography align='left' color='red' sx={{ paddingLeft: 2 }}>
-              {formatCurrency(cltDetails.bossTax.vacancy)}
-            </Typography>
-          </Container>
+          <Typography
+            align='center'
+            color='orangered'
+            fontSize='small'
+            sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+          >
+            <span>13º Salário: {formatCurrency(cltDetails.bossTax.thirteenSalary)}</span>
+            <span>Férias: {formatCurrency(cltDetails.bossTax.vacancy)}</span>
+            <span>FGTS: {formatCurrency(cltDetails.bossTax.fgts)}</span>
+            <strong>
+              Total: {formatCurrency(totalBossTax)} [{formatPercent(cltDetails.bossTax.percent)}]
+            </strong>
+          </Typography>
 
-          <Container sx={{ display: "inline-flex", flexDirection: "row" }}>
-            <Typography align='right'>FGTS:</Typography>
-            <Typography align='left' color='red' sx={{ paddingLeft: 2 }}>
-              {formatCurrency(cltDetails.bossTax.fgts)}
-            </Typography>
-          </Container>
+          <Typography align='center' fontSize='large' fontWeight='bold' color='darkslategray'>
+            Salário Líquido CLT
+          </Typography>
 
-          <Typography gutterBottom variant='h6' component='h4'>
-            Sal. Líquido CLT: <span style={colorBlue}>{formatCurrency(cltDetails.cltLiquidSalary)}</span>
+          <Typography align='center' fontSize='large' fontWeight='bold' color='royalblue'>
+            {formatCurrency(cltDetails.cltLiquidSalary)}
           </Typography>
         </CardContent>
       </Card>

@@ -105,9 +105,9 @@ function CltSalary() {
     const percent = 1;
     const salarioPJ = _baseSalary;
 
-    _calculatedData.option2.pjSalary = salarioPJ;
-    _calculatedData.option2.percent = percent;
-    _calculatedData.option2 = calculatePJTaxes(_calculatedData.option2, salarioPJ);
+    _calculatedData.salaryDiff.pjSalary = salarioPJ;
+    _calculatedData.salaryDiff.percent = percent;
+    _calculatedData.salaryDiff = calculatePJTaxes(_calculatedData.salaryDiff, salarioPJ);
     return _calculatedData;
   };
 
