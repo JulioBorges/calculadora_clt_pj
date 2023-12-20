@@ -1,7 +1,7 @@
 export const colorRed = {
-  color: 'red'
+  color: "red",
 };
 
 export const colorBlue = {
-  color: 'Blue'
-}
+  color: "Blue",
+};
