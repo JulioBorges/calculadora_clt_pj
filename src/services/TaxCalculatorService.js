@@ -27,40 +27,16 @@ export const SnAnexo3_Faixa4Parcela = 35640 / 12;
 export const SnAnexo3_Faixa5Parcela = 125640 / 12;
 export const SnAnexo3_Faixa6Parcela = 648000 / 12;
 
-export const irrfBaseCalculoClt = (SalarioBaseClt, InssCltValor) => {
-  return Math.min(SalarioBaseClt + InssCltValor, SalarioBaseClt - descontoPadraoRt);
-};
+function calcularBaseCalculoClt(salarioBaseClt, inssCltValor) {
+  return Math.min(salarioBaseClt - inssCltValor, salarioBaseClt - descontoPadraoRt);
+}
 
 export function calcularImpostoDeRenda(SalarioBaseClt, InssCltValor) {
-  // Faixa                          Alíquota
-  // Até R$ 2.112,00	              Isento
-  // De R$ 2.112,01 a R$ 2.826,65   7,5%
-  // De R$ 2.826,66 a R$ 3.751,05   15%
-  // De R$ 3.751,06 a R$ 4.664,68   22,5%
-  // Acima de R$ 4.664,68           27,5%
-  const inssDeducted = SalarioBaseClt - InssCltValor;
-
-  let tiers = [0, 2112, 2826.66, 3751.06, 4664.68, inssDeducted];
-  let percentages = [0, 7.5, 15, 22.5, 27.5];
-
-  let irpf = 0.0;
-  let balance = inssDeducted;
-  for (let i = 0; i < percentages.length; i++) {
-    let tierRange = tiers[i + 1] - tiers[i];
-    let tributable = Math.min(tierRange, balance);
-    let tribute = tributable * percentages[i] * 0.01;
-    balance -= tributable;
-    irpf += tribute;
-  }
-  return parseCurrency(irpf);
+  let irrfBaseCalculo = calcularBaseCalculoClt(SalarioBaseClt, InssCltValor);
+  return calcularIrpf(irrfBaseCalculo);
 }
 
 export function calcularDescontoInss(salario) {
-  // Salário de contribuição	            Alíquota para recolhimento ao INSS 2023
-  // Até R$ 1.320,00	                    7,5%
-  // De R$ 1.320,01 até R$ 2.571,29	    9%
-  // De R$ 2.571,30 até R$ 3.856,94	    12%
-  // De R$ 3.856,95 até R$ 7.507,49	    14%
   let tiers = [0, 1320, 2571.29, 3856.94, 7507.49];
   let percentages = [7.5, 9, 12, 14];
 
@@ -111,7 +87,7 @@ export const calcularInssPJ = (salario) => {
   return calcularInss(prolaborePJ);
 };
 
-export const IrrfBaseCalculoPj = (proLaborePj, inssPj) => {
+const IrrfBaseCalculoPj = (proLaborePj, inssPj) => {
   const descInss = proLaborePj - inssPj;
   const descPadrao = proLaborePj - descontoPadraoRt;
   let resultado = Math.min(descInss, descPadrao);
@@ -139,30 +115,27 @@ export const calcularProLabore = (salarioPj) =>
 export const calcularIrrfPj = (salario, inss) => {
   let prolaborePj = calcularProLabore(salario);
   let irrfBaseCalculo = IrrfBaseCalculoPj(prolaborePj, inss);
+  return calcularIrpf(irrfBaseCalculo);
+}
 
+export const calcularIrpf = (irrfBaseCalculo) => {
   let resultado = 0;
-  resultado =
-    irrfBaseCalculo <= IrrfFaixa1Teto
-      ? irrfBaseCalculo * IrrfFaixa1Aliquota - IrrfFaixa1Parcela
-      : irrfBaseCalculo <= IrrfFaixa2Teto
-      ? irrfBaseCalculo * IrrfFaixa2Aliquota - IrrfFaixa2Parcela
-      : irrfBaseCalculo <= IrrfFaixa3Teto
-      ? irrfBaseCalculo * IrrfFaixa3Aliquota - IrrfFaixa3Parcela
-      : irrfBaseCalculo <= IrrfFaixa4Teto
-      ? irrfBaseCalculo * IrrfFaixa4Aliquota - IrrfFaixa4Parcela
-      : irrfBaseCalculo * IrrfFaixa5Aliquota - IrrfFaixa5Parcela;
+
+  if (irrfBaseCalculo <= IrrfFaixa1Teto) {
+    resultado = irrfBaseCalculo * IrrfFaixa1Aliquota - IrrfFaixa1Parcela;
+  } else if (irrfBaseCalculo <= IrrfFaixa2Teto) {
+    resultado = irrfBaseCalculo * IrrfFaixa2Aliquota - IrrfFaixa2Parcela;
+  } else if (irrfBaseCalculo <= IrrfFaixa3Teto) {
+    resultado = irrfBaseCalculo * IrrfFaixa3Aliquota - IrrfFaixa3Parcela;
+  } else if (irrfBaseCalculo <= IrrfFaixa4Teto) {
+    resultado = irrfBaseCalculo * IrrfFaixa4Aliquota - IrrfFaixa4Parcela;
+  } else {
+    resultado = irrfBaseCalculo * IrrfFaixa5Aliquota - IrrfFaixa5Parcela;
+  }
 
   return resultado;
 };
 
-/*
-Tabela INSS CLT			
-Valor Teto  Alíquota  Parcela a Deduzir   Teto
-1.320,00	  7,50%     0,00
-2.571,29	  9,00%	    19,80
-3.856,94	  12,00%    96,94
-7.507,49	  14,00%    174,08	            876,97
-*/
 export const InssFaixa1Teto = 1320.0;
 export const InssFaixa2Teto = 2571.29;
 export const InssFaixa3Teto = 3856.94;
