@@ -18,9 +18,9 @@ import {
   calcularFgtsClt,
   calcularImpostoDeRenda,
   calcularInssPJ,
-  calcularIrrfPj,
+  calcularIrrfPj
 } from "../services/TaxCalculatorService";
-import { track } from '@vercel/analytics';
+import { trackEvent } from "../services/TrackingService";
 
 function CltSalary() {
   const { baseSalary, setBaseSalary, setAlreadyCalculated, setCalculatedData } = useContext(AppContext);
@@ -124,7 +124,7 @@ function CltSalary() {
 
       setCalculatedData(calculatedData);
       setAlreadyCalculated(true);
-      track(`Calculated salary ${salário}`);
+      trackEvent(`Calculated salary ${salário}`);
     } catch (error) {
       console.error("Erro ao calcular!", error);
       setAlreadyCalculated(false);
